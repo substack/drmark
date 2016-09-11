@@ -1,0 +1,12 @@
+{
+  "dependencies": {
+    "marked": "^0.3.6",
+    "multi-regl": "^1.0.0",
+    "readable-stream": "^2.1.5",
+    "regl": "^1.1.1"
+  },
+  "devDependencies": {
+    "gl-mat4": "^1.1.4",
+    "multi-regl": "^1.0.0"
+  }
+}
