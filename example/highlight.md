@@ -1,3 +1,9 @@
+<style>
+.identifier {
+  font-weight: bold;
+}
+</style>
+
 # hello
 
 whatever
@@ -42,7 +48,7 @@ regl.frame(() => {
 
 # hey now
 
-<script show>
+<script show highlight=false>
 var regl = require('regl')()
 var mat4 = require('gl-mat4')
 var rmat = []

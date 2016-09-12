@@ -1,6 +1,7 @@
 var marked = require('marked')
 var browserify = require('browserify')
 var Readable = require('readable-stream/readable')
+var falafel = require('falafel')
 
 module.exports = function (src, opts, cb) {
   if (typeof opts === 'function') {
@@ -9,7 +10,7 @@ module.exports = function (src, opts, cb) {
   }
   if (!opts) opts = {}
   var streams = {}
-  var html = marked(src).replace(
+  var html = marked(src, { sanitize: false }).replace(
     /(?:^|\n)<script([^>]*)>([\s\S]*?)<\/script[^>]*>/ig,
     function (_, args, code) {
       var r = new Readable
@@ -19,7 +20,9 @@ module.exports = function (src, opts, cb) {
       streams[id] = r
       var argopts = parseAttrs(args)
       return '<script>_drmark'+id+'()</script>'
-        + (argopts.visible ? '<pre>' + esc(code) + '</pre>' : '')
+        + (argopts.show ? '<pre>'
+          + (argopts.highlight !== false ? highlight(code) : esc(code))
+          + '</pre>' : '')
     }
   )
   var files = Object.keys(streams).map(function (id) { return streams[id] })
@@ -41,5 +44,26 @@ function parseAttrs (str) {
   return obj
   function fn (_, key, doublev, singlev, barev) {
     obj[key] = doublev || singlev || barev || true
+    if (/^(false|no|off)$/i.test(obj[key])) obj[key] = false
   }
+}
+
+function highlight (str) {
+  return falafel(str, { ecmaVersion: 6 }, function (node) {
+    var str = node.source()
+    if (node.type === 'ArrowFunctionExpression') {
+      str = str.replace(/=>/, '=&gt;')
+    } else if (node.type === 'BinaryExpression' && /<>&/.test(node.operator)) {
+      str = node.left.source() + esc(node.operator) + node.right.source()
+    } else if (node.type === 'Literal' || node.type === 'TemplateElement') {
+      str = esc(str)
+    }
+    node.update('<span class="' + dash(node.type) + '">' + str + '</span>')
+  }).toString()
+}
+
+function dash (str) {
+  return str.replace(/^[A-Z]/,tolower).replace(/([a-z])([A-Z])/g, dasher)
+  function tolower (s) { return s.toLowerCase() }
+  function dasher (_, a, b) { return a + '-' + b.toLowerCase() }
 }

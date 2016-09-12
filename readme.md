@@ -22,7 +22,7 @@ drmark(src, { transform: ['multi-regl-transform'] }, function (err, html) {
 
 whatever
 
-<script>
+<script show>
 var regl = require('regl')()
 var mat4 = require('gl-mat4')
 var rmat = []
@@ -62,7 +62,7 @@ regl.frame(() => {
 
 # hey now
 
-<script>
+<script show>
 var regl = require('regl')()
 var mat4 = require('gl-mat4')
 var rmat = []
