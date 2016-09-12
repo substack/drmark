@@ -18,6 +18,19 @@ drmark(src, { transform: ['multi-regl-transform'] }, function (err, html) {
 ```
 
 ``` md
+<style>
+.identifier {
+  font-weight: bold;
+}
+.template-element {
+  background-color: cyan;
+  color: purple;
+}
+.literal {
+  color: red;
+}
+</style>
+
 # hello
 
 whatever
@@ -62,7 +75,7 @@ regl.frame(() => {
 
 # hey now
 
-<script show>
+<script show highlight=false>
 var regl = require('regl')()
 var mat4 = require('gl-mat4')
 var rmat = []
