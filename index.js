@@ -2,6 +2,7 @@ var marked = require('marked')
 var browserify = require('browserify')
 var Readable = require('readable-stream/readable')
 var falafel = require('falafel')
+var highlight = require('highlight-javascript-syntax')
 
 module.exports = function (src, opts, cb) {
   if (typeof opts === 'function') {
@@ -46,24 +47,4 @@ function parseAttrs (str) {
     obj[key] = doublev || singlev || barev || true
     if (/^(false|no|off)$/i.test(obj[key])) obj[key] = false
   }
-}
-
-function highlight (str) {
-  return falafel(str, { ecmaVersion: 6 }, function (node) {
-    var str = node.source()
-    if (node.type === 'ArrowFunctionExpression') {
-      str = str.replace(/=>/, '=&gt;')
-    } else if (node.type === 'BinaryExpression' && /<>&/.test(node.operator)) {
-      str = node.left.source() + esc(node.operator) + node.right.source()
-    } else if (node.type === 'Literal' || node.type === 'TemplateElement') {
-      str = esc(str)
-    }
-    node.update('<span class="' + dash(node.type) + '">' + str + '</span>')
-  }).toString()
-}
-
-function dash (str) {
-  return str.replace(/^[A-Z]/,tolower).replace(/([a-z])([A-Z])/g, dasher)
-  function tolower (s) { return s.toLowerCase() }
-  function dasher (_, a, b) { return a + '-' + b.toLowerCase() }
 }

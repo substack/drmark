@@ -10,6 +10,7 @@
     "browserify": "^13.1.0",
     "concat-stream": "^1.5.2",
     "falafel": "^1.2.0",
+    "highlight-javascript-syntax": "^1.0.0",
     "marked": "^0.3.6",
     "minimist": "^1.2.0",
     "readable-stream": "^2.1.5"
