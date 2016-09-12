@@ -4,6 +4,8 @@ turn markdown with embedded browserifiable demos into html
 
 # regl example
 
+[view the html for this demo](http://substack.neocities.org/drmark_demo.html)
+
 ``` js
 var drmark = require('drmark')
 var fs = require('fs')
