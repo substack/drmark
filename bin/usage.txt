@@ -1,0 +1,5 @@
+drmark {OPTIONS} < infile.md > outfile.html
+
+Read markdown from stdin and write html to stdout.
+
+OPTIONS are the same as browserify.

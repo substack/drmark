@@ -96,6 +96,16 @@ regl.frame(() => {
 ok...
 ```
 
+# usage
+
+```
+drmark {OPTIONS} < infile.md > outfile.html
+
+Read markdown from stdin and write html to stdout.
+
+OPTIONS are the same as browserify.
+```
+
 # api
 
 ``` js
@@ -107,6 +117,20 @@ var drmark = require('drmark')
 Convert a markdown document source string `src` to html by `cb(err, html)`.
 
 Any `opts` provided are passed through to browserify.
+
+# install
+
+To get the library:
+
+```
+$ npm install drmark
+```
+
+To get the command:
+
+```
+$ npm install -g drmark
+```
 
 # license
 
