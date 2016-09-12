@@ -21,7 +21,8 @@ module.exports = function (src, opts, cb) {
     }
   )
   var files = Object.keys(streams).map(function (id) { return streams[id] })
-  var b = browserify(files, opts)
+  var b = opts.browserify || browserify(opts)
+  files.forEach(function (file) { b.add(file) })
   b.bundle(function (err, buf) {
     if (err) return cb(err)
     cb(null, '\n<script>' + buf.toString() + '\n</script>' + html)

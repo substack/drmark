@@ -7,9 +7,11 @@
     "drmark": "bin/cmd.js"
   },
   "dependencies": {
+    "browserify": "^13.1.0",
+    "concat-stream": "^1.5.2",
     "marked": "^0.3.6",
-    "readable-stream": "^2.1.5",
-    "browserify": "^13.1.0"
+    "minimist": "^1.2.0",
+    "readable-stream": "^2.1.5"
   },
   "devDependencies": {
     "gl-mat4": "^1.1.4",
