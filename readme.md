@@ -108,6 +108,27 @@ Read markdown from stdin and write html to stdout.
 OPTIONS are the same as browserify.
 ```
 
+# syntax
+
+To insert an inline script tag, include a `<script>` tag at the beginning of a
+line in the markdown file. You can set these html attributes on the script tag:
+
+* `show` - whether to show . default: `false`
+* `highlight` - whether to wrap shown code in spans. default: `true`
+
+For example:
+
+``` html
+# hello this is markdown whatever
+
+<script show highlight=false>
+  // ...
+</script>
+```
+
+The syntax highlighting wraps javascript tokens in span tags with acorn/esprima
+node types for class names converted from camel case to lower-case and dashed.
+
 # api
 
 ``` js
