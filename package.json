@@ -1,12 +1,34 @@
 {
+  "name": "drmark",
+  "description": "turn markdown with embedded browserifiable demos into html",
+  "version": "1.0.0",
+  "main": "index.js",
+  "bin": {
+    "drmark": "bin/cmd.js"
+  },
   "dependencies": {
     "marked": "^0.3.6",
-    "readable-stream": "^2.1.5"
+    "readable-stream": "^2.1.5",
+    "browserify": "^13.1.0"
   },
   "devDependencies": {
     "gl-mat4": "^1.1.4",
     "multi-regl": "^1.0.0",
     "multi-regl-transform": "^1.0.0",
     "regl": "^1.2.1"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/substack/drmark.git"
+  },
+  "keywords": [
+    "markdown",
+    "browserify"
+  ],
+  "author": "substack",
+  "license": "BSD",
+  "bugs": {
+    "url": "https://github.com/substack/drmark/issues"
+  },
+  "homepage": "https://github.com/substack/drmark#readme"
 }
