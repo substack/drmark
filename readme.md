@@ -108,6 +108,13 @@ Read markdown from stdin and write html to stdout.
 OPTIONS are the same as browserify.
 ```
 
+To recompile changes automatically when you edit a file, you can use the
+onchange command (`npm install -g onchange`):
+
+```
+$ onchange mark.md -- sh -c 'drmark < mark.md > mark.html'
+```
+
 # syntax
 
 To insert an inline script tag, include a `<script>` tag at the beginning of a

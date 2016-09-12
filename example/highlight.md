@@ -2,6 +2,13 @@
 .identifier {
   font-weight: bold;
 }
+.template-element {
+  background-color: cyan;
+  color: purple;
+}
+.literal {
+  color: red;
+}
 </style>
 
 # hello
