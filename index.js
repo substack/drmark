@@ -13,17 +13,17 @@ module.exports = function (src, opts, cb) {
     /(?:^|\n)<script([^>]*)>([\s\S]*?)<\/script[^>]*>/ig,
     function (_, args, code) {
       var r = new Readable
-      r.push(code)
-      r.push(null)
       var id = Math.floor(Math.random()*Math.pow(16,8)).toString(16)
+      r.push('_drmark' + id + '=function(){'+code+'}')
+      r.push(null)
       streams[id] = r
-      return ''
+      return '<script>_drmark'+id+'()</script>'
     }
   )
   var files = Object.keys(streams).map(function (id) { return streams[id] })
-  var b = browserify(files)
+  var b = browserify(files, opts)
   b.bundle(function (err, buf) {
     if (err) return cb(err)
-    cb(null, html + '\n<script>' + buf.toString() + '\n</script>')
+    cb(null, '\n<script>' + buf.toString() + '\n</script>' + html)
   })
 }
