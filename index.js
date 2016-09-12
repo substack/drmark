@@ -17,7 +17,9 @@ module.exports = function (src, opts, cb) {
       r.push('_drmark' + id + '=function(){'+code+'}')
       r.push(null)
       streams[id] = r
+      var argopts = parseAttrs(args)
       return '<script>_drmark'+id+'()</script>'
+        + (argopts.visible ? '<pre>' + esc(code) + '</pre>' : '')
     }
   )
   var files = Object.keys(streams).map(function (id) { return streams[id] })
@@ -27,4 +29,17 @@ module.exports = function (src, opts, cb) {
     if (err) return cb(err)
     cb(null, '\n<script>' + buf.toString() + '\n</script>' + html)
   })
+}
+
+function esc (str) {
+  return str.replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/&/g, '&amp;')
+}
+
+function parseAttrs (str) {
+  var obj = {}
+  str.replace(/([^=\s]+)(?:\s*=\s*(?:"([^"]*?)"|\'([^']*?)\'|(\S*)))?/g, fn)
+  return obj
+  function fn (_, key, doublev, singlev, barev) {
+    obj[key] = doublev || singlev || barev || true
+  }
 }

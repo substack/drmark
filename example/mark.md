@@ -2,7 +2,7 @@
 
 whatever
 
-<script>
+<script visible>
 var regl = require('regl')()
 var mat4 = require('gl-mat4')
 var rmat = []
@@ -42,7 +42,7 @@ regl.frame(() => {
 
 # hey now
 
-<script>
+<script visible>
 var regl = require('regl')()
 var mat4 = require('gl-mat4')
 var rmat = []
