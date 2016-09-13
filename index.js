@@ -52,8 +52,6 @@ module.exports = function (src, opts, cb) {
           + 'var begin = target.childNodes.length\n'
           + '_drmarkCode[id]()\n'
           + 'var end = target.childNodes.length\n'
-          + 'console.log(begin,end)\n'
-          + 'console.log(target.childNodes)\n'
           + 'for(var i=begin; target.childNodes[i];) {\n'
             + 'var c = target.childNodes[i]\n'
             + 'target.removeChild(c)\n'
