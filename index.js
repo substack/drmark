@@ -16,22 +16,54 @@ module.exports = function (src, opts, cb) {
     function (_, args, code) {
       var r = new Readable
       var id = Math.floor(Math.random()*Math.pow(16,8)).toString(16)
-      r.push('_drmark' + id + '=function(){'+code+'}')
+      r.push('_drmarkCode["'+id+'"]=function(){'+code+'}')
       r.push(null)
       streams[id] = r
       var argopts = parseAttrs(args)
-      return '<script>_drmark'+id+'()</script>'
-        + (argopts.show ? '<pre>'
-          + (argopts.highlight !== false ? highlight(code) : esc(code))
-          + '</pre>' : '')
+      if (opts.deferred) {
+        return '<div id="'+id+'"></div>'
+          + (argopts.show ? '<pre>'
+            + (argopts.highlight !== false ? highlight(code) : esc(code))
+            + '</pre>' : '')
+      } else {
+        return '<script>_drmarkCode["'+id+'"]()</script>'
+          + (argopts.show ? '<pre>'
+            + (argopts.highlight !== false ? highlight(code) : esc(code))
+            + '</pre>' : '')
+      }
     }
   )
   var files = Object.keys(streams).map(function (id) { return streams[id] })
   var b = opts.browserify || browserify(opts)
   files.forEach(function (file) { b.add(file) })
   b.bundle(function (err, buf) {
-    if (err) return cb(err)
-    cb(null, '\n<script>' + buf.toString() + '\n</script>' + html)
+    if (err) cb(err)
+    else if (opts.deferred) {
+      var target = opts.target || 'document.body'
+      if (target === 'body') target = 'document.body'
+      if (target !== 'document.body') {
+        target = 'document.querySelector('+JSON.stringify(target)+')'
+      }
+      cb(null, '<script>_drmarkCode={}</script>\n' + html + '\n<script>\n'
+        + buf.toString() + '\n;(function(){'
+        + 'var target = '+target+'\n'
+        + ';'+JSON.stringify(Object.keys(streams))+'.forEach(function(id){'
+          + 'var dst = document.getElementById(id)\n'
+          + 'var begin = target.childNodes.length\n'
+          + '_drmarkCode[id]()\n'
+          + 'var end = target.childNodes.length\n'
+          + 'console.log(begin,end)\n'
+          + 'console.log(target.childNodes)\n'
+          + 'for(var i=begin; target.childNodes[i];) {\n'
+            + 'var c = target.childNodes[i]\n'
+            + 'target.removeChild(c)\n'
+            + 'dst.appendChild(c)\n'
+          + '}\n'
+        + '})\n})()</script>')
+    } else {
+      cb(null, '\n<script>_drmarkCode={};\n'
+        + buf.toString() + '\n</script>' + html)
+    }
   })
 }
 

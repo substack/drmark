@@ -2,6 +2,9 @@
 
 turn markdown with embedded browserifiable demos into html
 
+Your code should append elements to `document.body` or a custom target and they
+will appear inline in the page.
+
 # regl example
 
 [view the html for this demo](http://substack.neocities.org/drmark_demo.html)
@@ -118,7 +121,10 @@ drmark {OPTIONS} < infile.md > outfile.html
 
 Read markdown from stdin and write html to stdout.
 
-OPTIONS are the same as browserify.
+OPTIONS are the same as browserify plus:
+
+--deferred  Place the script tag after content.
+--target    Append elements to this spot in the page as a query selector.
 ```
 
 To recompile changes automatically when you edit a file, you can use the
@@ -133,7 +139,7 @@ $ onchange mark.md -- sh -c 'drmark < mark.md > mark.html'
 To insert an inline script tag, include a `<script>` tag at the beginning of a
 line in the markdown file. You can set these html attributes on the script tag:
 
-* `show` - whether to show . default: `false`
+* `show` - whether to show code. default: `false`
 * `highlight` - whether to wrap shown code in spans. default: `true`
 
 For example:
@@ -159,7 +165,10 @@ var drmark = require('drmark')
 
 Convert a markdown document source string `src` to html by `cb(err, html)`.
 
-Any `opts` provided are passed through to browserify.
+Any `opts` provided are passed through to browserify plus:
+
+* `opts.deferred` - place the script tag after content. default: `false`
+* `opts.target` - append elements to this query selector. default: `'body'`
 
 # install
 

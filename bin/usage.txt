@@ -2,4 +2,7 @@ drmark {OPTIONS} < infile.md > outfile.html
 
 Read markdown from stdin and write html to stdout.
 
-OPTIONS are the same as browserify.
+OPTIONS are the same as browserify plus:
+
+--deferred  Place the script tag after content.
+--target    Append elements to this spot in the page as a query selector.
