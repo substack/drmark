@@ -3,6 +3,7 @@ var browserify = require('browserify')
 var Readable = require('readable-stream/readable')
 var falafel = require('falafel')
 var highlight = require('highlight-javascript-syntax')
+var shasum = require('shasum')
 
 module.exports = function (src, opts, cb) {
   if (typeof opts === 'function') {
@@ -15,7 +16,8 @@ module.exports = function (src, opts, cb) {
     /(?:^|\n)<script([^>]*)>([\s\S]*?)<\/script[^>]*>/ig,
     function (_, args, code) {
       var r = new Readable
-      var id = Math.floor(Math.random()*Math.pow(16,8)).toString(16)
+      var id = shasum(code)
+      r.file = id + '.js'
       r.push('_drmarkCode["'+id+'"]=function(){'+code+'}')
       r.push(null)
       streams[id] = r
@@ -38,6 +40,9 @@ module.exports = function (src, opts, cb) {
   var b = opts.browserify || browserify(opts)
   files.forEach(function (file) { b.add(file) })
   b.bundle(function (err, buf) {
+    b._recorded = b._recorded.filter(function (row) {
+      return !row.entry
+    })
     if (err) cb(err)
     else if (opts.deferred) {
       var target = opts.target || 'document.body'
@@ -48,7 +53,7 @@ module.exports = function (src, opts, cb) {
       cb(null, '<script>_drmarkCode={}</script>\n' + html + '\n<script>\n'
         + buf.toString() + '\n;(function(){'
         + 'var target = '+target+'\n'
-        + ';'+JSON.stringify(Object.keys(streams))+'.forEach(function(id){'
+        + ';'+JSON.stringify(keys)+'.forEach(function(id){'
           + 'var dst = document.getElementById(id)\n'
           + 'var begin = target.childNodes.length\n'
           + '_drmarkCode[id]()\n'

@@ -123,8 +123,13 @@ Read markdown from stdin and write html to stdout.
 
 OPTIONS are the same as browserify plus:
 
---deferred  Place the script tag after content.
---target    Append elements to this spot in the page as a query selector.
+   --deferred  Place the script tag after content.
+   --target    Append elements to this spot in the page as a query selector.
+-w --watch     Recompile when an input file changes.
+   --live      Reload automatically when an input file changes.
+-v --verbose   Print a message every time the code is recompiled.
+-i --infile    Read from a file. Default: - (stdin)
+-o --outfile   Write to a file. Default: - (stdout)
 ```
 
 To recompile changes automatically when you edit a file, you can use the

@@ -24,7 +24,7 @@ var draw = regl({
     precision mediump float;
     varying vec2 uv;
     void main () {
-      float x = uv.x + 2.0, y = uv.y + 3.0;
+      float x = uv.x + 1.5, y = uv.y + 3.0;
       gl_FragColor = vec4(
         sin(x*x*8.0 + x*y*5.0 + x*y*x*y*0.04),
         sin(x*x*3.0 + x*y*6.0 + x*y*x*y*0.08),
