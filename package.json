@@ -13,7 +13,9 @@
     "highlight-javascript-syntax": "^1.0.0",
     "marked": "^0.3.6",
     "minimist": "^1.2.0",
-    "readable-stream": "^2.1.5"
+    "readable-stream": "^2.1.5",
+    "sprintf": "^0.1.5",
+    "watchify": "^3.7.0"
   },
   "devDependencies": {
     "gl-mat4": "^1.1.4",

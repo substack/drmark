@@ -10,7 +10,7 @@ module.exports = function (src, opts, cb) {
     opts = {}
   }
   if (!opts) opts = {}
-  var streams = {}
+  var streams = {}, keys = []
   var html = marked(src, { sanitize: false }).replace(
     /(?:^|\n)<script([^>]*)>([\s\S]*?)<\/script[^>]*>/ig,
     function (_, args, code) {
@@ -19,6 +19,7 @@ module.exports = function (src, opts, cb) {
       r.push('_drmarkCode["'+id+'"]=function(){'+code+'}')
       r.push(null)
       streams[id] = r
+      keys.push(id)
       var argopts = parseAttrs(args)
       if (opts.deferred) {
         return '<div id="'+id+'"></div>'
@@ -33,7 +34,7 @@ module.exports = function (src, opts, cb) {
       }
     }
   )
-  var files = Object.keys(streams).map(function (id) { return streams[id] })
+  var files = keys.map(function (id) { return streams[id] })
   var b = opts.browserify || browserify(opts)
   files.forEach(function (file) { b.add(file) })
   b.bundle(function (err, buf) {
