@@ -11,3 +11,7 @@ OPTIONS are the same as browserify plus:
 -v --verbose   Print a message every time the code is recompiled.
 -i --infile    Read from a file. Default: - (stdin)
 -o --outfile   Write to a file. Default: - (stdout)
+
+You can specify commands with `-o`:
+
+  drmark -i infile.md -o 'gzip > index.html.gz'

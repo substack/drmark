@@ -9,6 +9,7 @@ var fromArgs = require('browserify/bin/args.js')
 var watchify = require('watchify')
 var wsock = require('websocket-stream')
 var onend = require('end-of-stream')
+var outpipe = require('outpipe')
 
 var wsockfile = require.resolve('websocket-stream/stream')
 var splitfile = require.resolve('split2')
@@ -85,7 +86,7 @@ if (argv.help || argv.h) {
       : fs.createReadStream(argv.infile)
     var outstream = argv.outfile === '-'
       ? process.stdout
-      : fs.createWriteStream(argv.outfile)
+      : outpipe(argv.outfile)
     outstream.once('finish', function () {
       setTimeout(function () {
         streams.forEach(function (s) {
