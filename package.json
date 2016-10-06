@@ -9,6 +9,7 @@
   "dependencies": {
     "browserify": "^13.1.0",
     "concat-stream": "^1.5.2",
+    "ecstatic": "^2.1.0",
     "end-of-stream": "^1.1.0",
     "falafel": "^1.2.0",
     "highlight-javascript-syntax": "^1.0.0",

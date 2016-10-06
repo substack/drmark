@@ -10,6 +10,7 @@ var watchify = require('watchify')
 var wsock = require('websocket-stream')
 var onend = require('end-of-stream')
 var outpipe = require('outpipe')
+var ecstatic = require('ecstatic')
 
 var wsockfile = require.resolve('websocket-stream/stream')
 var splitfile = require.resolve('split2')
@@ -19,7 +20,7 @@ var http = require('http')
 
 var argv = minimist(process.argv.slice(2), {
   alias: { w: 'watch', i: 'infile', o: 'outfile', v: 'verbose' },
-  default: { infile: '-', outfile: '-' },
+  default: { infile: '-', outfile: '-', dir: process.cwd() },
   boolean: ['deferred','watch','verbose','live']
 })
 if (argv.help || argv.h) {
@@ -43,10 +44,13 @@ if (argv.help || argv.h) {
   var wsaddr = null, streams = [], postsrc = '', queue = []
   var bundle = null
   if (opts.live) {
+    var st = ecstatic(argv.dir)
     var server = http.createServer(function (req, res) {
-      res.setHeader('cache-control', 'max-age=0,must-revalidate')
-      if (bundle) res.end(bundle)
-      else queue.push(res.end.bind(res))
+      if (req.url.split('?')[0] === '/') {
+        res.setHeader('cache-control', 'max-age=0,must-revalidate')
+        if (bundle) res.end(bundle)
+        else queue.push(res.end.bind(res))
+      } else st(req, res)
     })
     server.listen(9955, function () {
       console.log('http://localhost:' + server.address().port)
