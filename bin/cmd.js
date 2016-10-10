@@ -21,7 +21,7 @@ var http = require('http')
 var argv = minimist(process.argv.slice(2), {
   alias: { w: 'watch', i: 'infile', o: 'outfile', v: 'verbose' },
   default: { infile: '-', outfile: '-', dir: process.cwd() },
-  boolean: ['deferred','watch','verbose','live']
+  boolean: ['deferred','watch','verbose','live','server']
 })
 if (argv.help || argv.h) {
   fs.readFile(path.join(__dirname,'usage.txt'),'utf8',function (err, src) {
@@ -43,7 +43,7 @@ if (argv.help || argv.h) {
   b.on('update', build)
   var wsaddr = null, streams = [], postsrc = '', queue = []
   var bundle = null
-  if (opts.live) {
+  if (opts.live || opts.server) {
     var st = ecstatic(argv.dir)
     var server = http.createServer(function (req, res) {
       if (req.url.split('?')[0] === '/') {
@@ -55,7 +55,7 @@ if (argv.help || argv.h) {
     server.listen(9955, function () {
       console.log('http://localhost:' + server.address().port)
       wsaddr = 'ws://localhost:' + server.address().port
-      postsrc = `\n<script>(function recon () {
+      postsrc = !opts.live ? '' : `\n<script>(function recon () {
         var stream = require(${str(wsockfile)})(${str(wsaddr)})
         require(${str(onendfile)})(stream, function () {
           setTimeout(recon, 500)
@@ -92,11 +92,11 @@ if (argv.help || argv.h) {
       ? process.stdout
       : outpipe(argv.outfile)
     outstream.once('finish', function () {
-      setTimeout(function () {
+      if (opts.live) {
         streams.forEach(function (s) {
           s.write('{"cmd":"reload"}\n')
         })
-      }, 50)
+      }
     })
     instream.pipe(concat(function (src) {
       if (argv.infile !== '-') b.emit('file', argv.infile)

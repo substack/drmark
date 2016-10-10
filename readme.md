@@ -127,6 +127,7 @@ OPTIONS are the same as browserify plus:
    --target    Append elements to this spot in the page as a query selector.
 -w --watch     Recompile when an input file changes.
    --live      Reload automatically when an input file changes.
+   --server    Start a server without live reload.
 -v --verbose   Print a message every time the code is recompiled.
 -i --infile    Read from a file. Default: - (stdin)
 -o --outfile   Write to a file. Default: - (stdout)
