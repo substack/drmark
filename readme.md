@@ -123,7 +123,6 @@ Read markdown from stdin and write html to stdout.
 
 OPTIONS are the same as browserify plus:
 
-   --deferred  Place the script tag after content.
    --target    Append elements to this spot in the page as a query selector.
 -w --watch     Recompile when an input file changes.
    --live      Reload automatically when an input file changes.
@@ -178,7 +177,6 @@ Convert a markdown document source string `src` to html by `cb(err, html)`.
 
 Any `opts` provided are passed through to browserify plus:
 
-* `opts.deferred` - place the script tag after content. default: `false`
 * `opts.target` - append elements to this query selector. default: `'body'`
 * `opts.class` - set the css class of inline content blocks
 
