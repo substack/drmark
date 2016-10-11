@@ -128,6 +128,7 @@ OPTIONS are the same as browserify plus:
 -w --watch     Recompile when an input file changes.
    --live      Reload automatically when an input file changes.
    --server    Start a server without live reload.
+   --class     Set the css class of inline content blocks.
 -v --verbose   Print a message every time the code is recompiled.
 -i --infile    Read from a file. Default: - (stdin)
 -o --outfile   Write to a file. Default: - (stdout)
@@ -179,6 +180,7 @@ Any `opts` provided are passed through to browserify plus:
 
 * `opts.deferred` - place the script tag after content. default: `false`
 * `opts.target` - append elements to this query selector. default: `'body'`
+* `opts.class` - set the css class of inline content blocks
 
 # install
 
