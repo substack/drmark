@@ -26,7 +26,8 @@ module.exports = function (src, opts, cb) {
       return '<div id="'+id+'"'
         + (opts.class ? ' class="'+opts.class+'"' : '')+'>'
         + (argopts.show ? '<pre>'
-          + (argopts.highlight !== false ? highlight(code) : esc(code))
+          + (argopts.highlight !== false
+            ? highlight(code.trim()) : esc(code.trim()))
           + '</pre>' : '')
         + '</div>'
     }
