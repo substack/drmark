@@ -2,8 +2,9 @@ var marked = require('marked')
 var browserify = require('browserify')
 var Readable = require('readable-stream/readable')
 var falafel = require('falafel')
-var highlight = require('highlight-javascript-syntax')
+var highlight = require('highlight-syntax/all')
 var shasum = require('shasum')
+var fs = require('fs')
 
 module.exports = function (src, opts, cb) {
   if (typeof opts === 'function') {
@@ -12,7 +13,11 @@ module.exports = function (src, opts, cb) {
   }
   if (!opts) opts = {}
   var streams = {}, keys = []
-  var html = marked(src, { sanitize: false }).replace(
+  var mopts = {
+    sanitize: false,
+    highlight: highlight
+  }
+  var html = marked(src, mopts).replace(
     /(?:^|\n)<script([^>]*)>([\s\S]*?)<\/script[^>]*>/ig,
     function (_, args, code) {
       var r = new Readable
@@ -27,7 +32,7 @@ module.exports = function (src, opts, cb) {
         + (opts.class ? ' class="'+opts.class+'"' : '')+'>'
         + (argopts.show ? '<pre>'
           + (argopts.highlight !== false
-            ? highlight(code.trim()) : esc(code.trim()))
+            ? highlight(code.trim(), 'js') : esc(code.trim()))
           + '</pre>' : '')
         + '</div>'
     }
