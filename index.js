@@ -3,8 +3,8 @@ var browserify = require('browserify')
 var Readable = require('readable-stream/readable')
 var falafel = require('falafel')
 var highlight = require('highlight-syntax/all')
-var shasum = require('shasum')
 var fs = require('fs')
+var randombytes = require('randombytes')
 
 module.exports = function (src, opts, cb) {
   if (typeof opts === 'function') {
@@ -17,11 +17,11 @@ module.exports = function (src, opts, cb) {
     sanitize: false,
     highlight: highlight
   }
-  var html = marked(src, mopts).replace(
+  var html = marked(src.replace(
     /(?:^|\n)<script([^>]*)>([\s\S]*?)<\/script[^>]*>/ig,
     function (_, args, code) {
       var r = new Readable
-      var id = shasum(code)
+      var id = randombytes(16).toString('hex')
       r.file = id + '.js'
       r.push('_drmarkCode["'+id+'"]=function(){'+code+'}')
       r.push(null)
@@ -36,7 +36,7 @@ module.exports = function (src, opts, cb) {
           + '</pre>' : '')
         + '</div>'
     }
-  )
+  ), mopts)
   var files = keys.map(function (id) { return streams[id] })
   var b = opts.browserify || browserify(opts)
   files.forEach(function (file) { b.add(file) })
