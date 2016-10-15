@@ -17,7 +17,7 @@ module.exports = function (src, opts, cb) {
     sanitize: false,
     highlight: highlight
   }
-  var html = marked(src.replace(
+  var html = marked(src, mopts).replace(
     /(?:^|\n)<script([^>]*)>([\s\S]*?)<\/script[^>]*>/ig,
     function (_, args, code) {
       var r = new Readable
@@ -36,7 +36,7 @@ module.exports = function (src, opts, cb) {
           + '</pre>' : '')
         + '</div>'
     }
-  ), mopts)
+  )
   var files = keys.map(function (id) { return streams[id] })
   var b = opts.browserify || browserify(opts)
   files.forEach(function (file) { b.add(file) })
